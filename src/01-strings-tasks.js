@@ -5,7 +5,6 @@
  *                                                                                           *
  ******************************************************************************************* */
 
-
 /**
  * Returns the result of concatenation of two strings.
  *
@@ -21,7 +20,6 @@
 function concatenateStrings(value1, value2) {
   return value1 + value2;
 }
-
 
 /**
  * Returns the length of given string.
@@ -69,7 +67,6 @@ function extractNameFromTemplate(value) {
   const str = value.split(',');
   return str[1].slice(1, str[1].length - 1);
 }
-
 
 /**
  * Returns a first char of the given string.
@@ -146,7 +143,6 @@ function unbracketTag(str) {
   return str.slice(1, str.length - 1);
 }
 
-
 /**
  * Converts all characters of the specified string into the upper case
  *
@@ -205,8 +201,8 @@ function extractEmails(str) {
  */
 function getRectangleString(width, height) {
   let value = '';
-  for (let i = 0; i < height; i++) {
-    for (let j = 0; j < width; j++) {
+  for (let i = 0; i < height; i += 1) {
+    for (let j = 0; j < width; j += 1) {
       if (i === 0 && j === 0) {
         value += '┌';
       } else if (i === 0 && j === width - 1) {
@@ -228,7 +224,6 @@ function getRectangleString(width, height) {
   return value;
 }
 
-
 /**
  * Encode specified string with ROT13 cipher
  * See details:  https://en.wikipedia.org/wiki/ROT13
@@ -246,20 +241,21 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-  let alphaUp = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let alphaLow = 'abcdefghijklmnopqrstuvwxyz';
-  let value = '';
-  str = str.split('');
-  str.forEach((ch) => {
-    if (alphaUp.indexOf(ch) === -1 && alphaLow.indexOf(ch) === -1) {
-      value += ch;
-    } else if (ch === ch.toUpperCase()) {
-      value += alphaUp[(alphaUp.indexOf(ch) + 13) % alphaUp.length];
-    } else {
-      value += alphaLow[(alphaLow.indexOf(ch) + 13) % alphaLow.length];
+  const result = str.split('').map((el) => {
+    let asciiIndex = el.charCodeAt();
+    if (asciiIndex >= 65 && asciiIndex <= 77) {
+      asciiIndex += 13;
+    } else if (asciiIndex >= 78 && asciiIndex <= 90) {
+      asciiIndex -= 13;
+    } else if (asciiIndex >= 97 && asciiIndex <= 109) {
+      asciiIndex += 13;
+    } else if (asciiIndex >= 110 && asciiIndex <= 122) {
+      asciiIndex -= 13;
     }
+    return String.fromCharCode(asciiIndex);
   });
-  return value;
+
+  return result.join('');
 }
 
 /**
@@ -277,11 +273,10 @@ function encodeToRot13(str) {
  */
 function isString(value) {
   if (value) {
-    return typeof value == 'string' || typeof value.valueOf() == 'string';
+    return typeof value === 'string' || typeof value.valueOf() === 'string';
   }
   return false;
 }
-
 
 /**
  * Returns playid card id.
@@ -308,14 +303,62 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-  let str = ['A♣', '2♣', '3♣', '4♣', '5♣', '6♣', '7♣', '8♣', '9♣', '10♣', 'J♣', 'Q♣', 'K♣',
-    'A♦', '2♦', '3♦', '4♦', '5♦', '6♦', '7♦', '8♦', '9♦', '10♦', 'J♦', 'Q♦', 'K♦',
-    'A♥', '2♥', '3♥', '4♥', '5♥', '6♥', '7♥', '8♥', '9♥', '10♥', 'J♥', 'Q♥', 'K♥',
-    'A♠', '2♠', '3♠', '4♠', '5♠', '6♠', '7♠', '8♠', '9♠', '10♠', 'J♠', 'Q♠', 'K♠'
-  ]
+  const str = [
+    'A♣',
+    '2♣',
+    '3♣',
+    '4♣',
+    '5♣',
+    '6♣',
+    '7♣',
+    '8♣',
+    '9♣',
+    '10♣',
+    'J♣',
+    'Q♣',
+    'K♣',
+    'A♦',
+    '2♦',
+    '3♦',
+    '4♦',
+    '5♦',
+    '6♦',
+    '7♦',
+    '8♦',
+    '9♦',
+    '10♦',
+    'J♦',
+    'Q♦',
+    'K♦',
+    'A♥',
+    '2♥',
+    '3♥',
+    '4♥',
+    '5♥',
+    '6♥',
+    '7♥',
+    '8♥',
+    '9♥',
+    '10♥',
+    'J♥',
+    'Q♥',
+    'K♥',
+    'A♠',
+    '2♠',
+    '3♠',
+    '4♠',
+    '5♠',
+    '6♠',
+    '7♠',
+    '8♠',
+    '9♠',
+    '10♠',
+    'J♠',
+    'Q♠',
+    'K♠',
+  ];
   return str.indexOf(value);
 }
-
 
 module.exports = {
   concatenateStrings,
